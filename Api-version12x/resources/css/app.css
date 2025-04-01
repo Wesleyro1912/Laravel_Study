@@ -2,10 +2,109 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../**/*.vue";
 
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@layer components {
+
+    /* Container principal */
+    .main-container {
+        @apply flex flex-col h-screen bg-gray-100;
+    }
+
+    /****** Início Header ******/
+    /* Estilização do Header */
+    .header {
+        @apply bg-blue-700 text-white p-4 w-full;
+    }
+
+    .content-header {
+        @apply max-w-6xl mx-auto flex items-center;
+    }
+
+    .title-logo {
+        @apply text-xl font-bold;
+    }
+
+    .list-nav-link {
+        @apply flex space-x-6 ml-6;
+    }
+
+    .nav-link {
+        @apply hover:text-gray-300 transition-colors;
+    }
+
+    /****** Fim Header ******/
+
+    /****** Início Conteúdo da Página ******/
+    /* Layout da página */
+    .content {
+        @apply flex-1 px-2 py-6 max-w-6xl mx-auto w-full;
+    }
+
+    /* Conteúdo do título */
+    .content-title {
+        @apply flex justify-between items-center mb-6;
+    }
+
+    /* Título principal */
+    .page-title {
+        @apply text-2xl;
+    }
+
+    /****** Fim Conteúdo da Página ******/
+
+
+    /****** Início Formulário ******/
+    /* Formulário */
+    .form-container {
+        @apply mt-6 bg-white shadow-md rounded-lg p-6;
+    }
+
+    /* Label dos inputs */
+    .form-label {
+        @apply block text-sm font-semibold;
+    }
+
+    /* Input padrão */
+    .form-input {
+        @apply border p-2 w-full mt-1 rounded-md border-blue-100 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:outline-none;
+    }
+
+    /****** Fim Formulário ******/
+
+
+    /****** Início Botões ******/
+    /* Botão azul */
+    .btn-primary {
+        @apply bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors;
+    }
+
+    /* Botão verde */
+    .btn-success {
+        @apply p-2 bg-green-500 text-white rounded-md hover:bg-green-600 cursor-pointer transition-colors;
+    }
+
+    /****** Fim Botões ******/
+    
+
+    /****** Início Alertas ******/
+    /* Alerta de sucesso */
+    .alert-success {
+        @apply p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-200 dark:bg-gray-800 dark:text-green-400;
+    }
+
+    /* Alerta de erro */
+    .alert-error {
+        @apply p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-200 dark:bg-gray-800 dark:text-red-400;
+    }
+    /****** Fim Alertas ******/
+
+
 }
