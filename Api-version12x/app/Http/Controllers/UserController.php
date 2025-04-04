@@ -47,4 +47,26 @@ class UserController extends Controller {
         // Carregar a view
         return view('users.index', ['users' => $users]);
     }
+
+    // === View de edição ===
+    public function edit(User $user){
+        // Carregar view
+        return view('users.edit', ['user' => $user]);
+    }
+
+    // === Edição de usuário ===
+    public function update(UserRequest $request, User $user){
+
+        try {
+            $user_>update([
+                'name' => $request->name,
+                'email' => $request->email,
+            ]);
+
+            return redirect()->route('user.edit')->with('success', 'Usuário edidato com sucesso!');
+
+        } catch (Exception $e) {
+            return back()->withInput()->with('error', 'Não foi possível realizar o cadastro do usuário!');
+        }
+    }
 }
