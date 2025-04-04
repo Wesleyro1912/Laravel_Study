@@ -17,7 +17,7 @@
             <div class="content-header">
                 <h2 class="title-logo"><a href="{{ route('dashboard') }}">Home</a></h2>
                 <ul class="list-nav-link">
-                    <li><a href="#" class="nav-link">Usuários</a></li>
+                    <li><a href="{{ route('user.index') }}" class="nav-link">Usuários</a></li>
                     <li><a href="{{ route('dashboard') }}" class="nav-link">Sair</a></li>
                 </ul>
             </div>

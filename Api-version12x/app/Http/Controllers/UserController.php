@@ -36,6 +36,15 @@ class UserController extends Controller {
         } catch ( Exception $e){
             return back()->withInput()->with('error', 'Não foi possível realizar o cadastro do usuário!');
         }
-       
+    }
+
+    // === Lista de usuários ===
+    public function index() {
+
+        // Recuperar os dados
+        $users = User::orderBydesc('id')->paginate(10);
+
+        // Carregar a view
+        return view('users.index', ['users' => $users]);
     }
 }
