@@ -42,7 +42,7 @@ class UserController extends Controller {
     public function index() {
 
         // Recuperar os dados
-        $users = User::orderBydesc('id')->paginate(10);
+        $users = User::orderBydesc('id')->paginate(2);
 
         // Carregar a view
         return view('users.index', ['users' => $users]);
@@ -58,15 +58,15 @@ class UserController extends Controller {
     public function update(UserRequest $request, User $user){
 
         try {
-            $user_>update([
+            $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
             ]);
 
-            return redirect()->route('user.edit')->with('success', 'Usuário edidato com sucesso!');
+            return redirect()->route('user.edit', ['user' => $user])->with('success', 'Usuário edidato com sucesso!');
 
         } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Não foi possível realizar o cadastro do usuário!');
+            return back()->withInput()->with('error', 'Não foi possível realizar a edição do usuário!');
         }
     }
 }
