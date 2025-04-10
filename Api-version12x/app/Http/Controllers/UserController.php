@@ -75,4 +75,16 @@ class UserController extends Controller {
         // Carregar view
         return view('users.show', ['user' => $user]);
     }
+
+    // === Delete de usuário ===
+    public function destroy(User $user){
+        try{
+
+            $user->delete();
+            return redirect()->route('user.index')->with('success', 'Usuário excluido com sucesso!');
+
+        } catch (Exception $e) {
+            return redirect()->route('user.index')->with('error', 'Não foi possível realizar o delete do usuário!');
+        }
+    }
 }
