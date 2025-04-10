@@ -25,13 +25,13 @@ class UserController extends Controller {
     public function store(UserRequest $request){
         try {
             // Cadastro
-            User::create([
+           $user =  User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => $request->password,
             ]);
 
-            return redirect()->route('user.create')->with('success', 'Usuário cadastrado com sucesso!');
+            return redirect()->route('user.show', ['user' => $user->id])->with('success', 'Usuário cadastrado com sucesso!');
 
         } catch ( Exception $e){
             return back()->withInput()->with('error', 'Não foi possível realizar o cadastro do usuário!');
@@ -63,10 +63,16 @@ class UserController extends Controller {
                 'email' => $request->email,
             ]);
 
-            return redirect()->route('user.edit', ['user' => $user])->with('success', 'Usuário edidato com sucesso!');
+            return redirect()->route('user.show', ['user' => $user])->with('success', 'Usuário edidato com sucesso!');
 
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Não foi possível realizar a edição do usuário!');
         }
+    }
+
+     // === View de visualizar um unico usuário ===
+     public function show(User $user){
+        // Carregar view
+        return view('users.show', ['user' => $user]);
     }
 }
