@@ -6,6 +6,7 @@
             <div class="content-title">
                 <h1 class="page-title">Cadastrar Usuário</h1>
                 <a href="{{ route('user.index') }}" class="btn-primary">Listar</a>
+                
             </div>
 
             <x-alert />
