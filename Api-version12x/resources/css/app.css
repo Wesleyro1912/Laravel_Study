@@ -109,7 +109,7 @@
     }
 
     .table-actions{
-        @apply py-3 px-6 text-center;
+        @apply py-3 px-6 text-center flex space-x-1;
     }
 
     .pagination{
