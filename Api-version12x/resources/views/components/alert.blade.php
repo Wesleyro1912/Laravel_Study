@@ -1,19 +1,42 @@
 @if (session('success'))
-    <div class="alert-success">
-        {{ session('success') }}
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                title: "Pronto!",
+                text: "{{ session('success') }}",
+                icon: "success"
+            });
+        });
+    </script>
 @endif
 
 @if (session('error'))
-    <div class="alert-error">
-        {{ session('error') }}
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                title: "Error!",
+                text: "{{ session('error') }}",
+                icon: "error"
+            });
+        });
+    </script>
 @endif
 
 @if ($errors->all())
-    <div class="alert-error">
-        @foreach ($errors->all() as $error)
-        {{ $error }}<br>
-        @endforeach
-    </div>
+    @php
+        $menssage = '';
+        foreach ($errors->all() as $error){
+            $menssage .= $error . '<br>';
+        }
+    @endphp
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                title: "Error!",
+                html: "{!! $menssage !!}",
+                icon: "error"
+            });
+        });
+    </script>
+
 @endif
