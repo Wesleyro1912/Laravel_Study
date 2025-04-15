@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -86,5 +87,12 @@ class UserController extends Controller {
         } catch (Exception $e) {
             return redirect()->route('user.index')->with('error', 'Não foi possível realizar o delete do usuário!');
         }
+    }
+
+    // === Gerar pdf ===
+    public function generatePdf(User $user){
+
+        $pdf = Pdf::loadView('users.gerenate-pdf', ['user' => $user])->setPaper('a4', 'portrait');
+        return $pdf->download('view_user.pdf');
     }
 }

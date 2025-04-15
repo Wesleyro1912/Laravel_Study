@@ -6,6 +6,7 @@
             <div class="content-title">
                 <h1 class="page-title">Detalhes do Usuário</h1>
                 <span class="flex space-x-1">
+                    <a href="{{ route('user.generate-pdf', ['user' => $user->id ]) }}" class="btn-warning">Gerar PDF</a>
                     <a href="{{ route('user.index') }}" class="btn-primary">Listar</a>
                     <a href="{{ route('user.edit', ['user' => $user->id ]) }}" class="btn-warning">Editar</a>
                     <form action="{{ route('user.destroy', ['user' => $user->id]) }}" method="POST">
