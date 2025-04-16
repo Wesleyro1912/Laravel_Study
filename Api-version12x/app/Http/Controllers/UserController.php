@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Mail\UserPdfMail;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller {
     
@@ -86,5 +89,28 @@ class UserController extends Controller {
         } catch (Exception $e) {
             return redirect()->route('user.index')->with('error', 'Não foi possível realizar o delete do usuário!');
         }
+    }
+
+    // === Gerar pdf ===
+    public function generatePdf(User $user){
+        try {
+            $pdf = Pdf::loadView('users.gerenate-pdf', ['user' => $user])->setPaper('a4', 'portrait');
+            
+            $pdfPath = storage_path("app/public/view_user_{$user->id}.pdf");
+
+            $pdf->save($pdfPath);
+
+            Mail::to($user->email)->send(new UserPdfMail($pdfPath, $user));
+
+            if(file_exists($pdfPath)){
+                unlink($pdfPath);
+            }
+
+            return redirect()->route('user.show', ['user' => $user])->with('success', 'PDF enviado com sucesso!');
+
+        } catch (Exception $e) {
+            return redirect()->route('user.show', ['user' => $user])->with('error', 'Não foi possível gerar o PDF e enviar pelo e-mail!');
+        }
+        
     }
 }
