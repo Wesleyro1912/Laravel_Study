@@ -9,6 +9,23 @@
             </div>
 
             <x-alert />
+
+            <form class="pb-3 grid xl:grid-cols-5 md:grid-cols-2 gap-2 items-end">
+
+                <input type="text" name="name" class="form-input" placeholder="digite o nome" value="{{ $name }}"> 
+                <input type="text" name="email" class="form-input" placeholder="digite o e-mail" value="{{ $email }}">
+
+                <div class="flex gap-1">
+
+                    <button type="submit" class="btn-primary"> 
+                        <span>Pesquisar</span>
+                    </button>
+
+                    <a href="{{ route('user.index') }}" class="btn-warning"><span>Limpar</span></a>
+
+                </div>
+            </form>
+
             <div class="table-container">
                 <table class="table">
                     <thead>
