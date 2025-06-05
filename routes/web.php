@@ -15,3 +15,4 @@ Route::put('/update-user/{user}', [UserController::class, 'update'])->name('user
 Route::get('/show-user/{user}', [UserController::class, 'show'])->name('user.show');
 Route::delete('/destroy-user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 Route::get('/generate-pdf-user/{user}', [UserController::class, 'generatePdf'])->name('user.generate-pdf');
+Route::get('/generate-pdf-user', [UserController::class, 'generatePdfUsers'])->name('user.generate-pdf-urses');

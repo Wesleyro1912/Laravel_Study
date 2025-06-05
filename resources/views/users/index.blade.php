@@ -5,7 +5,10 @@
         <div class="content">
             <div class="content-title">
                 <h1 class="page-title">Listar Usuários</h1>
-                <a href="{{ route('user.create') }}" class="btn-success">Cadastrar</a>
+                <span>
+                    <a href="{{ route('user.create') }}" class="btn-success">Cadastrar</a>
+                    <a href="{{ url('generate-pdf-user') . (request()->getQueryString() ? '?' . request()->getQueryString() : '') }}" class="btn-warning">Gerar PDF</a>
+                </span>
             </div>
 
             <x-alert />
@@ -14,6 +17,8 @@
 
                 <input type="text" name="name" class="form-input" placeholder="digite o nome" value="{{ $name }}"> 
                 <input type="text" name="email" class="form-input" placeholder="digite o e-mail" value="{{ $email }}">
+                <input type="datetime-local" name="start_date_registration" class="form-input"  value="{{ $start_date_registration }}"> 
+                <input type="datetime-local" name="end_date_registration" class="form-input"    value="{{ $end_date_registration }}">
 
                 <div class="flex gap-1">
 
