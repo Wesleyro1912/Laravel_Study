@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class UserController extends Controller {
     
@@ -24,7 +25,6 @@ class UserController extends Controller {
         // Carregar view
         return view('users.create');
     }
-
 
     // === Cadastro de usuário ===
     public function store(UserRequest $request){
@@ -199,5 +199,83 @@ class UserController extends Controller {
             Log::error('Erro ao gerar o PDF: ' . $e->getMessage());
             return redirect()->route('user.index')->with('error', 'PDF não gerado!');
         }
+    }
+
+    // === Gerar CSV ===
+    public function generateCsvUsers(Request $request) {
+    
+        // Recuperar os registros do banco dados
+        $users = User::when(
+            $request->filled('name'),
+            fn($query) =>
+            $query->whereLike('name', '%' . $request->name . '%')
+        )
+            ->when(
+                $request->filled('email'),
+                fn($query) =>
+                $query->whereLike('email', '%' . $request->email . '%')
+            )
+            ->when(
+                $request->filled('start_date_registration'),
+                fn($query) =>
+                $query->where('created_at', '>=', Carbon::parse($request->start_date_registration))
+            )
+            ->when(
+                $request->filled('end_date_registration'),
+                fn($query) =>
+                $query->where('created_at', '<=', Carbon::parse($request->end_date_registration))
+            )
+            ->orderByDesc('name')
+            ->get();
+
+        // Somar total de registros
+        $totalRecords = $users->count('id');
+
+        // Verificar se a quantidade de registros ultrapassa o limite para gerar CSV
+        $numberRecordsAllowed = 5;
+            if ($totalRecords > $numberRecordsAllowed) {
+                // Redirecionar o usuário, enviar a mensagem de erro
+                return redirect()->route('user.index', [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'start_date_registration' => $request->start_date_registration,
+                    'end_date_registration' => $request->end_date_registration,
+                ])->with('error', "Limite de registros ultrapassado para gerar CSV. O limite é de $numberRecordsAllowed registros!");
+            }
+
+        // Criar um arquivo temporario
+        $csvFileName = tempnam(sys_get_temp_dir(), 'csv_' . Str::ulid());
+
+        // Abrir o arquivo na forma de escrita
+        $openFile = fopen($csvFileName, 'w');
+
+        // Criar o cabeçalho do Excel
+        $header = ['id', 'Nome', 'E-mail', 'Data de Cadastrado'];
+
+        // Escrever o cabeçalho no arquivo
+        fputcsv($openFile, $header, ';');
+
+        // Ler os registros recuperados do banco de dados
+        foreach( $users as $user) {
+
+            // Criar o array com os dados da linha do Excel
+            $userArray = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'created_at' => \Carbon\Carbon::parse($user->created_at)->format('d/m/Y H:i:s'),
+            ];
+
+            // Escrever o conteúdo no arquivo
+            fputcsv($openFile, $userArray, ';');
+        }
+
+        // Fechar o arquivo após a escrita
+        fclose($openFile);
+
+        //  Realizar o download do arquivo
+        return response()->download($csvFileName, 'list_users_' . Str::ulid() . '.csv');
+        
+        
     }
 }
